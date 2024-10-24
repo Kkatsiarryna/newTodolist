@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import { ChangeEvent } from "react"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { changeTaskStatusTC, changeTaskTitleAC, removeTaskTC } from "../../../../../model/tasks-reducer"
+import { removeTaskTC, updateTaskTC } from "../../../../../model/tasks-reducer"
 import { DomainTodolist } from "../../../../../model/todolists-reducer"
 import { getListItemSx } from "./Task.styles"
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
@@ -32,11 +32,14 @@ export const Task = ({ task, todolist }: Props) => {
 
     let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
     //dispatch(changeTaskStatusTC({ taskId: task.id, status, todolistId: todolist.id }))
-    dispatch(changeTaskStatusTC({ task, status }))
+
+    dispatch(updateTaskTC({ task, domainModel: { status } }))
   }
 
   const changeTaskTitleHandler = (title: string) => {
-    dispatch(changeTaskTitleAC({ taskId: task.id, title, todolistId: todolist.id }))
+    //dispatch(changeTaskTitleAC({ taskId: task.id, title, todolistId: todolist.id }))
+
+    dispatch(updateTaskTC({ task, domainModel: { title } }))
   }
 
   const isCompleted = task.status === TaskStatus.Completed
