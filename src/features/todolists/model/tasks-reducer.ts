@@ -214,24 +214,32 @@ export const updateTaskAC = (payload: { task: DomainTask; domainModel: UpdateTas
 
 export const fetchTasksTC = (todolistId: string) => (dispatch: AppDispatch) => {
   dispatch(setAppStatusAC("loading"))
-  tasksApi.getTasks(todolistId).then((res) => {
-    dispatch(setAppStatusAC("succeeded"))
-    const tasks = res.data.items
-    dispatch(setTasksAC({ todolistId, tasks }))
-  })
+  tasksApi
+    .getTasks(todolistId)
+    .then((res) => {
+      dispatch(setAppStatusAC("succeeded"))
+      const tasks = res.data.items
+      dispatch(setTasksAC({ todolistId, tasks }))
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch)
+    })
 }
 
 export const removeTaskTC = (arg: { todolistId: string; taskId: string }) => (dispatch: AppDispatch) => {
   dispatch(setAppStatusAC("loading"))
   tasksApi
     .removeTask(arg)
-    .then(() => {
-      dispatch(setAppStatusAC("succeeded"))
-      dispatch(removeTaskAC(arg))
+    .then((res) => {
+      if (res.data.resultCode === ResultCode.Success) {
+        dispatch(setAppStatusAC("succeeded"))
+        dispatch(removeTaskAC(arg))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
     })
-    .catch((err) => {
-      dispatch(setAppErrorAC(err.message))
-      dispatch(setAppStatusAC("failed"))
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch)
     })
 }
 
@@ -278,8 +286,8 @@ export const updateTaskTC =
           dispatch(setAppStatusAC("succeeded"))
           dispatch(updateTaskAC({ task: res.data.data.item, domainModel }))
         } else {
-          dispatch(setAppStatusAC("failed"))
-          dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+          // dispatch(setAppStatusAC("failed"))
+          // dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
         }
       })
       .catch((err) => {
