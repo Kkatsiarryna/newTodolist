@@ -7,6 +7,7 @@ import { getTheme } from "common/theme"
 import { selectThemeMode } from "./appSelectors"
 import { Main } from "./Main"
 import { ErrorSnackbar } from "common/components"
+import { Outlet } from "react-router-dom"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -14,7 +15,8 @@ export const App = () => {
     <ThemeProvider theme={getTheme(themeMode)}>
       <CssBaseline />
       <Header />
-      <Main />
+      {/*<Main />*/}
+      <Outlet />
       <ErrorSnackbar />
     </ThemeProvider>
   )
