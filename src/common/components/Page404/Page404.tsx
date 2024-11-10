@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 export const Page404 = () => {
   const navigate = useNavigate()
   const goToHomeHandler = () => {
-    navigate("/")
+    // navigate(Path.Main)
   }
   return (
     <div className={s.main}>

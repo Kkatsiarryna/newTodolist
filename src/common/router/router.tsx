@@ -5,18 +5,19 @@ import { Login } from "../../features/auth/ui/Login/Login"
 import { Page404 } from "common/components"
 
 export const Path = {
+  Main: "/",
   Login: "login",
 } as const
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: Path.Main,
     element: <App />,
     //errorElement: <Page404 />,
     children: [
       //рендер в outlet
       {
-        path: "/",
+        path: Path.Main,
         element: <Main />,
       },
       {
