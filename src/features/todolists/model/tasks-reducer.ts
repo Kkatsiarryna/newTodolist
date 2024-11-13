@@ -2,6 +2,7 @@ import {
   AddTodolistActionType,
   changeTodolistEntityStatusAC,
   ChangeTodolistEntityStatusActionType,
+  ClearTodosDataAtionType,
   RemoveTodolistActionType,
 } from "./todolists-reducer"
 import { AppDispatch } from "app/store"
@@ -138,6 +139,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             : t,
         ),
       }
+    }
+
+    case "CLEAR_DATA": {
+      return {}
     }
 
     default:
@@ -382,3 +387,4 @@ type ActionsType =
   | SetTasksActionType
   | UpdateTaskActionType
   | ChangeTodolistEntityStatusActionType
+  | ClearTodosDataAtionType

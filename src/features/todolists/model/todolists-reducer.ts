@@ -6,6 +6,7 @@ import { handleServerNetworkError } from "common/utils"
 import { ResultCode } from "../lib/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
 import { Dispatch } from "redux"
+import { fetchTasksTC } from "./tasks-reducer"
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -63,6 +64,10 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
       )
     }
 
+    case "CLEAR_DATA": {
+      return []
+    }
+
     default:
       return state
   }
@@ -95,8 +100,13 @@ export const setTodolistsAC = (todolists: Todolist[]) => {
 export const changeTodolistEntityStatusAC = (payload: { id: string; entityStatus: RequestStatus }) => {
   return { type: "CHANGE-TODOLIST-ENTITY-STATUS", payload } as const
 }
+
+export const clearTodosDataAC = () => {
+  return { type: "CLEAR_DATA" } as const
+}
+
 //thunck
-export const fetchTodolistsTC = () => (dispatch: Dispatch) => {
+export const fetchTodolistsTC = () => (dispatch: any) => {
   //on
   dispatch(setAppStatusAC("loading"))
   todolistsApi
@@ -105,6 +115,12 @@ export const fetchTodolistsTC = () => (dispatch: Dispatch) => {
       //of
       dispatch(setAppStatusAC("succeeded"))
       dispatch(setTodolistsAC(res.data))
+      return res.data
+    })
+    .then((todos) => {
+      todos.forEach((tl) => {
+        dispatch(fetchTasksTC(tl.id))
+      })
     })
     .catch((error) => {
       handleServerNetworkError(error, dispatch)
@@ -171,6 +187,7 @@ export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitl
 export type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 export type ChangeTodolistEntityStatusActionType = ReturnType<typeof changeTodolistEntityStatusAC>
+export type ClearTodosDataAtionType = ReturnType<typeof clearTodosDataAC>
 
 type ActionsType =
   | RemoveTodolistActionType
@@ -179,3 +196,4 @@ type ActionsType =
   | ChangeTodolistFilterActionType
   | SetTodolistsActionType
   | ChangeTodolistEntityStatusActionType
+  | ClearTodosDataAtionType
