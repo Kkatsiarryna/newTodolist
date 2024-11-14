@@ -1,13 +1,25 @@
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, Navigate, Outlet, RouteObject, useNavigate } from "react-router-dom"
 import { App } from "app/App"
 import { Main } from "app/Main"
 import { Login } from "../../features/auth/ui/Login/Login"
 import { Page404 } from "common/components"
+import { useAppSelector } from "common/hooks"
+import { selectIsLoggedIn } from "../../features/auth/model/authSelectors"
 
 export const Path = {
   Main: "/",
   Login: "login",
 } as const
+
+export const ProtectedRoute = () => {
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+  if (!isLoggedIn) {
+    return <Navigate to={Path.Login} />
+  }
+
+  return <Outlet />
+}
 
 export const router = createBrowserRouter([
   {
@@ -15,10 +27,15 @@ export const router = createBrowserRouter([
     element: <App />,
     //errorElement: <Page404 />,
     children: [
-      //рендер в outlet
       {
         path: Path.Main,
-        element: <Main />,
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: Path.Main,
+            element: <Main />,
+          },
+        ],
       },
       {
         path: Path.Login,
@@ -31,3 +48,17 @@ export const router = createBrowserRouter([
     ],
   },
 ])
+
+//рендер в outlet
+// {
+//   path: Path.Main,
+//   element: <Main />,
+// },
+// {
+//   path: Path.Login,
+//   element: <Login />,
+// },
+// {
+//   path: "*",
+//   element: <Page404 />,
+// },

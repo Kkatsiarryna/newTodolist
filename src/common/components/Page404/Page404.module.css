@@ -18,6 +18,7 @@
     text-transform: uppercase;
 }
 .button {
+    text-decoration: none;
     margin-top: 30px;
     display: inline-block;
     padding: .75rem 1.25rem;

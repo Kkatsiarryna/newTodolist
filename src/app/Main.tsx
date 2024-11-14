@@ -16,9 +16,9 @@ export const Main = () => {
   const addTodolist = (title: string) => {
     dispatch(addTodolistTC(title))
   }
-  if (!isLoggedIn) {
-    return <Navigate to={Path.Login} />
-  }
+  // if (!isLoggedIn) {
+  //   return <Navigate to={Path.Login} />
+  // }
 
   return (
     <Container fixed>
