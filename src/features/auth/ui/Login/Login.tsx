@@ -8,13 +8,13 @@ import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
-import { selectThemeMode } from "app/appSelectors"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-import { loginTC } from "../../model/auth-reducer"
+import { loginTC } from "../../model/authSlice"
 import { selectIsLoggedIn } from "../../model/authSelectors"
 import { Navigate } from "react-router-dom"
 import { Path } from "common/router/router"
+import { selectThemeMode } from "app/appSlice"
 
 type Inputs = {
   email: string
@@ -35,7 +35,7 @@ export const Login = () => {
     handleSubmit,
     reset,
     control,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {

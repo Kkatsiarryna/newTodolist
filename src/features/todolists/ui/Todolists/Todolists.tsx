@@ -5,7 +5,7 @@ import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectTodolists } from "../../model/todolistsSelectors"
 import { Todolist } from "./Todolist/Todolist"
 import { useAppDispatch } from "common/hooks"
-import { fetchTodolistsTC } from "../../model/todolists-reducer"
+import { fetchTodolistsTC } from "../../model/todolistsSlice"
 
 export const Todolists = () => {
   const todolists = useAppSelector(selectTodolists)

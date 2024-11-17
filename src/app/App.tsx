@@ -4,13 +4,13 @@ import React, { useEffect } from "react"
 import { Header } from "common/components"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
-import { selectThemeMode } from "./appSelectors"
 import { ErrorSnackbar } from "common/components"
 import { Outlet } from "react-router-dom"
-import { initializeAppTC } from "../features/auth/model/auth-reducer"
+import { initializeAppTC } from "../features/auth/model/authSlice"
 import { selectIsInitialized } from "../features/auth/model/authSelectors"
 import CircularProgress from "@mui/material/CircularProgress"
 import s from "./App.module.css"
+import { selectThemeMode } from "app/appSlice"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
