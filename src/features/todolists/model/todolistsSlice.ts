@@ -63,6 +63,9 @@ export const todolistsSlice = createSlice({
       return []
     }),
   }),
+  selectors: {
+    selectTodolists: (state) => state,
+  },
 })
 
 export const {
@@ -74,6 +77,8 @@ export const {
   changeTodolistEntityStatus,
   clearTodosData,
 } = todolistsSlice.actions
+
+export const { selectTodolists } = todolistsSlice.selectors
 export const todolistsReducer = todolistsSlice.reducer
 
 //thunck

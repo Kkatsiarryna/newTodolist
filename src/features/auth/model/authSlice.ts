@@ -23,9 +23,14 @@ export const authSlice = createSlice({
       state.isInitialized = action.payload.isInitialized
     }),
   }),
+  selectors: {
+    selectIsLoggedIn: (state) => state.isLoggedIn,
+    selectIsInitialized: (state) => state.isInitialized,
+  },
 })
 
 export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
+export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
 export const authReducer = authSlice.reducer
 
 // reducers: { //старый синтаксис

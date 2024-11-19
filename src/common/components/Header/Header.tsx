@@ -9,8 +9,7 @@ import { useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { MenuButton } from "common/components"
 import LinearProgress from "@mui/material/LinearProgress"
-import { selectIsLoggedIn } from "../../../features/auth/model/authSelectors"
-import { logoutTC } from "../../../features/auth/model/authSlice"
+import { logoutTC, selectIsLoggedIn } from "../../../features/auth/model/authSlice"
 import { changeTheme, selectAppStatus, selectThemeMode } from "app/appSlice"
 
 export const Header = () => {

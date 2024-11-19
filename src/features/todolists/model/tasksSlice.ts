@@ -54,9 +54,13 @@ export const tasksSlice = createSlice({
         return {}
       })
   },
+  selectors: {
+    selectTasks: (state) => state,
+  },
 })
 
 export const { setTasks, removeTask, addTask, updateTask } = tasksSlice.actions
+export const { selectTasks } = tasksSlice.selectors
 export const tasksReducer = tasksSlice.reducer
 
 //thunck
