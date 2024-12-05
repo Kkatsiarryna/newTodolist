@@ -6,14 +6,22 @@ import { useAppDispatch, useAppSelector } from "common/hooks"
 import { addTodolistTC } from "../features/todolists/model/todolistsSlice"
 import { Todolists } from "../features/todolists/ui/Todolists/Todolists"
 import { selectIsLoggedIn } from "../features/auth/model/authSlice"
+import { useAddTodolistMutation } from "../features/todolists/api/_todolistsApi"
 
 export const Main = () => {
-  const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-
-  const addTodolist = (title: string) => {
-    dispatch(addTodolistTC(title))
+  //RTK QUERY
+  const [addTodolist, {}] = useAddTodolistMutation()
+  const addTodolistCb = (title: string) => {
+    addTodolist(title)
   }
+
+  //REDUX
+  // const dispatch = useAppDispatch()
+  // const addTodolist = (title: string) => {
+  //   dispatch(addTodolistTC(title))
+  // }
+
+  //const isLoggedIn = useAppSelector(selectIsLoggedIn)
   // if (!isLoggedIn) {
   //   return <Navigate to={Path.Login} />
   // }
@@ -21,7 +29,8 @@ export const Main = () => {
   return (
     <Container fixed>
       <Grid container sx={{ mb: "30px" }}>
-        <AddItemForm addItem={addTodolist} />
+        {/*<AddItemForm addItem={addTodolist} />*/}
+        <AddItemForm addItem={addTodolistCb} />
       </Grid>
 
       <Grid container spacing={4}>

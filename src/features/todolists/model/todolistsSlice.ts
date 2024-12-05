@@ -1,5 +1,5 @@
 import { Todolist } from "../api/todolistsApi.types"
-import { todolistsApi } from "../api/todolistsApi"
+import { _todolistsApi } from "../api/_todolistsApi"
 import { RequestStatus, setAppStatus } from "app/appSlice"
 import { handleServerNetworkError } from "common/utils"
 import { ResultCode } from "../lib/enums"
@@ -85,7 +85,7 @@ export const todolistsReducer = todolistsSlice.reducer
 export const fetchTodolistsTC = () => (dispatch: any) => {
   //on
   dispatch(setAppStatus({ status: "loading" }))
-  todolistsApi
+  _todolistsApi
     .getTodolists()
     .then((res) => {
       //of
@@ -105,7 +105,7 @@ export const fetchTodolistsTC = () => (dispatch: any) => {
 
 export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  todolistsApi
+  _todolistsApi
     .createTodolist(title)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
@@ -123,7 +123,7 @@ export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
 export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
   dispatch(changeTodolistEntityStatus({ id, entityStatus: "loading" }))
-  todolistsApi
+  _todolistsApi
     .removeTodolist(id)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
@@ -141,7 +141,7 @@ export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
 
 export const updateTodolistTitleTC = (arg: { id: string; title: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  todolistsApi
+  _todolistsApi
     .updateTodolist(arg)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {

@@ -2,7 +2,7 @@ import Checkbox from "@mui/material/Checkbox"
 import React, { ChangeEvent, useEffect, useState } from "react"
 import { DomainTask, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
 import { Todolist } from "../features/todolists/api/todolistsApi.types"
-import { todolistsApi } from "../features/todolists/api/todolistsApi"
+import { _todolistsApi } from "../features/todolists/api/_todolistsApi"
 import { tasksApi } from "../features/todolists/api/tasksApi"
 import { TaskStatus } from "../features/todolists/lib/enums"
 import { AddItemForm, EditableSpan } from "common/components"
@@ -14,7 +14,7 @@ export const AppHttpRequests = () => {
 
   useEffect(() => {
     // get todolists
-    todolistsApi.getTodolists().then((res) => {
+    _todolistsApi.getTodolists().then((res) => {
       const todolists = res.data
       setTodolists(todolists)
       todolists.forEach((tl) => {
@@ -29,7 +29,7 @@ export const AppHttpRequests = () => {
 
   const createTodolistHandler = (title: string) => {
     // create todolist
-    todolistsApi.createTodolist(title).then((res) => {
+    _todolistsApi.createTodolist(title).then((res) => {
       const newTodolist = res.data.data.item
       setTodolists([newTodolist, ...todolists])
     })
@@ -37,14 +37,14 @@ export const AppHttpRequests = () => {
 
   const removeTodolistHandler = (id: string) => {
     // remove todolist
-    todolistsApi.removeTodolist(id).then(() => {
+    _todolistsApi.removeTodolist(id).then(() => {
       setTodolists(todolists.filter((tl) => tl.id !== id))
     })
   }
 
   const updateTodolistHandler = (id: string, title: string) => {
     // update todolist title
-    todolistsApi.updateTodolist({ id, title }).then(() => {
+    _todolistsApi.updateTodolist({ id, title }).then(() => {
       setTodolists(todolists.map((tl) => (tl.id === id ? { ...tl, title } : tl)))
     })
   }
