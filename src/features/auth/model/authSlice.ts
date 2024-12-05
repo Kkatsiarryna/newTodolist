@@ -1,6 +1,6 @@
 import { LoginArgs } from "../api/authApi.types"
 import { Dispatch } from "redux"
-import { authApi } from "../api/authApi"
+import { _authApi } from "../api/authApi"
 import { ResultCode } from "../../todolists/lib/enums"
 import { handleServerAppError } from "common/utils/handleServerAppError"
 import { handleServerNetworkError } from "common/utils"
@@ -13,24 +13,26 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: false,
-    isInitialized: false,
+    // isInitialized: false,
   },
   reducers: (create) => ({
     setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
       state.isLoggedIn = action.payload.isLoggedIn
     }),
     setIsInitialized: create.reducer<{ isInitialized: boolean }>((state, action) => {
-      state.isInitialized = action.payload.isInitialized
+      // state.isInitialized = action.payload.isInitialized
     }),
   }),
   selectors: {
     selectIsLoggedIn: (state) => state.isLoggedIn,
-    selectIsInitialized: (state) => state.isInitialized,
+    // selectIsInitialized: (state) => state.isInitialized,
   },
 })
 
-export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
-export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
+export const { setIsLoggedIn } = authSlice.actions
+//export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
+//export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
+export const { selectIsLoggedIn } = authSlice.selectors
 export const authReducer = authSlice.reducer
 
 // reducers: { //старый синтаксис
@@ -75,36 +77,36 @@ export const authReducer = authSlice.reducer
 // type ActionsType = SetIsLoggedInActionType | SetIsInitializedActionType
 
 // thunks
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-  //dispatch(setAppStatusAC("loading"))
-  dispatch(setAppStatus({ status: "loading" }))
-  authApi
-    .me()
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        console.log(res)
-        //dispatch(setAppStatusAC("succeeded"))
-        dispatch(setAppStatus({ status: "succeeded" }))
-        //dispatch(setIsLoggedInAC(true))
-        dispatch(setIsLoggedIn({ isLoggedIn: true }))
-      } else {
-        console.log(res)
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
-    .finally(() => {
-      //dispatch(setIsInitializedAC(true))
-      dispatch(setIsInitialized({ isInitialized: true }))
-    })
-}
+// export const initializeAppTC = () => (dispatch: Dispatch) => {
+//   //dispatch(setAppStatusAC("loading"))
+//   dispatch(setAppStatus({ status: "loading" }))
+//   _authApi
+//     .me()
+//     .then((res) => {
+//       if (res.data.resultCode === ResultCode.Success) {
+//         console.log(res)
+//         //dispatch(setAppStatusAC("succeeded"))
+//         dispatch(setAppStatus({ status: "succeeded" }))
+//         //dispatch(setIsLoggedInAC(true))
+//         dispatch(setIsLoggedIn({ isLoggedIn: true }))
+//       } else {
+//         console.log(res)
+//         handleServerAppError(res.data, dispatch)
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch)
+//     })
+//     .finally(() => {
+//       //dispatch(setIsInitializedAC(true))
+//       dispatch(setIsInitialized({ isInitialized: true }))
+//     })
+// }
 
 export const loginTC = (arg: LoginArgs) => (dispatch: Dispatch) => {
   //dispatch(setAppStatusAC("loading"))
   dispatch(setAppStatus({ status: "loading" }))
-  authApi
+  _authApi
     .login(arg)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
@@ -125,7 +127,7 @@ export const loginTC = (arg: LoginArgs) => (dispatch: Dispatch) => {
 export const logoutTC = () => (dispatch: Dispatch) => {
   //dispatch(setAppStatusAC("loading"))
   dispatch(setAppStatus({ status: "loading" }))
-  authApi
+  _authApi
     .logout()
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
