@@ -9,8 +9,10 @@ import { useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { MenuButton } from "common/components"
 import LinearProgress from "@mui/material/LinearProgress"
-import { logoutTC, selectIsLoggedIn } from "../../../features/auth/model/authSlice"
-import { changeTheme, selectAppStatus, selectThemeMode } from "app/appSlice"
+import { changeTheme, selectAppStatus, selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "app/appSlice"
+import { useLogoutMutation } from "../../../features/auth/api/authApi"
+import { ResultCode } from "../../../features/todolists/lib/enums"
+import { clearTodosData } from "../../../features/todolists/model/todolistsSlice"
 
 export const Header = () => {
   const dispatch = useAppDispatch()
@@ -25,9 +27,23 @@ export const Header = () => {
     // dispatch(changeThemeAC(themeMode === "light" ? "dark" : "light"))
     dispatch(changeTheme({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
+  //RTK QUERY
+  const [logout] = useLogoutMutation()
+
   const logoutHandler = () => {
-    dispatch(logoutTC())
+    logout().then((res) => {
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedIn({ isLoggedIn: false }))
+        localStorage.removeItem("sn-token")
+        dispatch(clearTodosData())
+      }
+    })
   }
+
+  //REDUX
+  // const logoutHandler = () => {
+  //   dispatch(logoutTC())
+  // }
 
   return (
     <AppBar position="static" sx={{ mb: "30px" }}>

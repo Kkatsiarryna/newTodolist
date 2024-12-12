@@ -10,10 +10,12 @@ import { useAppDispatch, useAppSelector } from "common/hooks"
 import { getTheme } from "common/theme"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import s from "./Login.module.css"
-import { loginTC, selectIsLoggedIn } from "../../model/authSlice"
 import { Navigate } from "react-router-dom"
 import { Path } from "common/router/router"
-import { selectThemeMode } from "app/appSlice"
+import { selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "app/appSlice"
+import { useLoginMutation } from "../../api/authApi"
+import { LoginArgs } from "../../api/authApi.types"
+import { ResultCode } from "../../../todolists/lib/enums"
 
 type Inputs = {
   email: string
@@ -27,6 +29,8 @@ export const Login = () => {
   const theme = getTheme(themeMode)
   const dispatch = useAppDispatch()
 
+  const [login] = useLoginMutation()
+
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const {
@@ -35,13 +39,29 @@ export const Login = () => {
     reset,
     control,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+  } = useForm<LoginArgs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+  //useForm<Inputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // console.log(data)
-    dispatch(loginTC(data))
-    reset()
+  //RTK QUERY
+  const onSubmit: SubmitHandler<LoginArgs> = (data) => {
+    login(data)
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedIn({ isLoggedIn: true }))
+          localStorage.setItem("sn-token", res.data.data.token)
+        }
+      })
+      .finally(() => {
+        reset()
+      })
   }
+
+  //REDUX
+  // const onSubmit: SubmitHandler<Inputs> = (data) => {
+  //   // console.log(data)
+  //   dispatch(loginTC(data))
+  //   reset()
+  // }
 
   if (isLoggedIn) {
     return <Navigate to={Path.Main} />

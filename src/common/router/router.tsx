@@ -4,7 +4,7 @@ import { Main } from "app/Main"
 import { Login } from "../../features/auth/ui/Login/Login"
 import { Page404 } from "common/components"
 import { useAppSelector } from "common/hooks"
-import { selectIsLoggedIn } from "../../features/auth/model/authSlice"
+import { selectIsLoggedIn } from "app/appSlice"
 
 export const Path = {
   Main: "/",

@@ -3,8 +3,8 @@ import IconButton from "@mui/material/IconButton"
 import { EditableSpan } from "common/components"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import s from "./TodolistTitle.module.css"
-import { DomainTodolist, removeTodolistTC, updateTodolistTitleTC } from "../../../../model/todolistsSlice"
-import { useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from "../../../../api/_todolistsApi"
+import { DomainTodolist } from "../../../../model/todolistsSlice"
+import { useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from "../../../../api/todolistsApi"
 
 type Props = {
   todolist: DomainTodolist

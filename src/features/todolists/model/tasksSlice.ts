@@ -1,4 +1,4 @@
-import { tasksApi } from "../api/tasksApi"
+import { _tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
 import { ResultCode } from "../lib/enums"
 import { handleServerNetworkError } from "common/utils"
@@ -67,7 +67,7 @@ export const tasksReducer = tasksSlice.reducer
 
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  tasksApi
+  _tasksApi
     .getTasks(todolistId)
     .then((res) => {
       dispatch(setAppStatus({ status: "succeeded" }))
@@ -81,7 +81,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 
 export const removeTaskTC = (arg: { todolistId: string; taskId: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  tasksApi
+  _tasksApi
     .removeTask(arg)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
@@ -99,7 +99,7 @@ export const removeTaskTC = (arg: { todolistId: string; taskId: string }) => (di
 
 export const addTaskTC = (arg: { todolistId: string; title: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }))
-  tasksApi
+  _tasksApi
     .createTask(arg)
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {
@@ -128,7 +128,7 @@ export const updateTaskTC = (arg: { task: DomainTask; domainModel: UpdateTaskDom
     ...domainModel,
   }
 
-  tasksApi
+  _tasksApi
     .updateTask({ task, model })
     .then((res) => {
       if (res.data.resultCode === ResultCode.Success) {

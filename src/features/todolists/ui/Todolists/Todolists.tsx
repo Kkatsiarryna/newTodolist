@@ -2,7 +2,7 @@ import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Unstable_Grid2"
 import React from "react"
 import { Todolist } from "./Todolist/Todolist"
-import { useGetTodolistsQuery } from "../../api/_todolistsApi"
+import { useGetTodolistsQuery } from "../../api/todolistsApi"
 
 export const Todolists = () => {
   //RTK QUERY

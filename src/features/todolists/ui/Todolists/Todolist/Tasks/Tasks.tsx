@@ -5,32 +5,42 @@ import { useAppDispatch } from "common/hooks"
 import { TaskStatus } from "../../../../lib/enums"
 import { DomainTodolist } from "../../../../model/todolistsSlice"
 import { selectTasks } from "../../../../model/tasksSlice"
+import { useGetTasksQuery } from "../../../../api/tasksApi"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const Tasks = ({ todolist }: Props) => {
-  const tasks = useAppSelector(selectTasks)
+  //RTK QUERY
+  const { data } = useGetTasksQuery(todolist.id)
 
-  const dispatch = useAppDispatch()
-
+  //REDUX
+  //const tasks = useAppSelector(selectTasks)
+  //const dispatch = useAppDispatch()
   // useEffect(() => {
   //   dispatch(fetchTasksTC(todolist.id))
   // }, [])
+  //const allTodolistTasks = tasks[todolist.id]
+  //let tasksForTodolist = allTodolistTasks
+  // if (todolist.filter === "active") {
+  //   //tasksForTodolist = allTodolistTasks.filter((task) => !task.isDone)
+  //   tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.New)
+  // }
+  //
+  // if (todolist.filter === "completed") {
+  //   //tasksForTodolist = allTodolistTasks.filter((task) => task.isDone)
+  //   tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.Completed)
+  // }
 
-  const allTodolistTasks = tasks[todolist.id]
-
-  let tasksForTodolist = allTodolistTasks
+  let tasksForTodolist = data?.items
 
   if (todolist.filter === "active") {
-    //tasksForTodolist = allTodolistTasks.filter((task) => !task.isDone)
-    tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.New)
+    tasksForTodolist = tasksForTodolist?.filter((task) => task.status === TaskStatus.New)
   }
 
   if (todolist.filter === "completed") {
-    //tasksForTodolist = allTodolistTasks.filter((task) => task.isDone)
-    tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.Completed)
+    tasksForTodolist = tasksForTodolist?.filter((task) => task.status === TaskStatus.Completed)
   }
 
   return (

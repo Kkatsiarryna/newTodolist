@@ -1,8 +1,37 @@
 import { DomainTask, GetTasksResponse, UpdateTaskModel } from "./tasksApi.types"
 import { instance } from "common/instance/instance"
 import { BaseResponse } from "common/types"
+import { baseApi } from "app/baseApi"
 
-export const tasksApi = {
+//RTK QUERY
+export const tasksApi = baseApi.injectEndpoints({
+  endpoints: (build) => ({
+    getTasks: build.query<GetTasksResponse, string>({
+      query: (id: string) => `todo-lists/${id}/tasks`,
+      providesTags: ["Task"],
+    }),
+    addTask: build.mutation<BaseResponse<{ item: DomainTask }>, { todolistId: string; title: string }>({
+      query: ({ todolistId, title }) => ({
+        url: `todo-lists/${todolistId}/tasks`,
+        method: "POST",
+        body: { title },
+      }),
+      invalidatesTags: ["Task"],
+    }),
+    removeTask: build.mutation<BaseResponse, { todolistId: string; taskId: string }>({
+      query: ({ todolistId, taskId }) => ({
+        url: `todo-lists/${todolistId}/tasks/${taskId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Task"],
+    }),
+  }),
+})
+
+export const { useGetTasksQuery, useAddTaskMutation, useRemoveTaskMutation } = tasksApi
+
+//REDUX
+export const _tasksApi = {
   getTasks(id: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${id}/tasks`)
   },

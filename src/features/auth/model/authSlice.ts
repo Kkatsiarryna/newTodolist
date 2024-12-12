@@ -1,39 +1,29 @@
-import { LoginArgs } from "../api/authApi.types"
-import { Dispatch } from "redux"
-import { _authApi } from "../api/authApi"
-import { ResultCode } from "../../todolists/lib/enums"
-import { handleServerAppError } from "common/utils/handleServerAppError"
-import { handleServerNetworkError } from "common/utils"
-import { createSlice } from "@reduxjs/toolkit"
-import { setAppStatus } from "app/appSlice"
-import { clearTodosData } from "../../todolists/model/todolistsSlice"
-
 //REDUX TOOLKIT
-export const authSlice = createSlice({
-  name: "auth",
-  initialState: {
-    isLoggedIn: false,
-    // isInitialized: false,
-  },
-  reducers: (create) => ({
-    setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn
-    }),
-    setIsInitialized: create.reducer<{ isInitialized: boolean }>((state, action) => {
-      // state.isInitialized = action.payload.isInitialized
-    }),
-  }),
-  selectors: {
-    selectIsLoggedIn: (state) => state.isLoggedIn,
-    // selectIsInitialized: (state) => state.isInitialized,
-  },
-})
+// export const authSlice = createSlice({
+//   name: "auth",
+//   initialState: {
+//     //isLoggedIn: false,
+//     // isInitialized: false,
+//   },
+//   reducers: (create) => ({
+//     // setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
+//     //   state.isLoggedIn = action.payload.isLoggedIn
+//     // }),
+//     setIsInitialized: create.reducer<{ isInitialized: boolean }>((state, action) => {
+//       // state.isInitialized = action.payload.isInitialized
+//     }),
+//   }),
+//   selectors: {
+//     // selectIsLoggedIn: (state) => state.isLoggedIn,
+//     // selectIsInitialized: (state) => state.isInitialized,
+//   },
+// })
 
-export const { setIsLoggedIn } = authSlice.actions
-//export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
-//export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
-export const { selectIsLoggedIn } = authSlice.selectors
-export const authReducer = authSlice.reducer
+// export const { setIsLoggedIn } = authSlice.actions
+// //export const { setIsLoggedIn, setIsInitialized } = authSlice.actions
+// //export const { selectIsLoggedIn, selectIsInitialized } = authSlice.selectors
+// export const { selectIsLoggedIn } = authSlice.selectors
+//export const authReducer = authSlice.reducer
 
 // reducers: { //старый синтаксис
 //   //подредюсер или экшен
@@ -103,45 +93,45 @@ export const authReducer = authSlice.reducer
 //     })
 // }
 
-export const loginTC = (arg: LoginArgs) => (dispatch: Dispatch) => {
-  //dispatch(setAppStatusAC("loading"))
-  dispatch(setAppStatus({ status: "loading" }))
-  _authApi
-    .login(arg)
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        //dispatch(setAppStatusAC("succeeded"))
-        dispatch(setAppStatus({ status: "succeeded" }))
-        //dispatch(setIsLoggedInAC(true))
-        dispatch(setIsLoggedIn({ isLoggedIn: true }))
-        localStorage.setItem("sn-token", res.data.data.token)
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
-}
+// export const loginTC = (arg: LoginArgs) => (dispatch: Dispatch) => {
+//   //dispatch(setAppStatusAC("loading"))
+//   dispatch(setAppStatus({ status: "loading" }))
+//   _authApi
+//     .login(arg)
+//     .then((res) => {
+//       if (res.data.resultCode === ResultCode.Success) {
+//         //dispatch(setAppStatusAC("succeeded"))
+//         dispatch(setAppStatus({ status: "succeeded" }))
+//         //dispatch(setIsLoggedInAC(true))
+//         dispatch(setIsLoggedIn({ isLoggedIn: true }))
+//         localStorage.setItem("sn-token", res.data.data.token)
+//       } else {
+//         handleServerAppError(res.data, dispatch)
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch)
+//     })
+// }
 
-export const logoutTC = () => (dispatch: Dispatch) => {
-  //dispatch(setAppStatusAC("loading"))
-  dispatch(setAppStatus({ status: "loading" }))
-  _authApi
-    .logout()
-    .then((res) => {
-      if (res.data.resultCode === ResultCode.Success) {
-        //dispatch(setAppStatusAC("succeeded"))
-        dispatch(setAppStatus({ status: "succeeded" }))
-        //dispatch(setIsLoggedInAC(false))
-        dispatch(setIsLoggedIn({ isLoggedIn: false }))
-        localStorage.removeItem("sn-token")
-        dispatch(clearTodosData())
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
-}
+// export const logoutTC = () => (dispatch: Dispatch) => {
+//   //dispatch(setAppStatusAC("loading"))
+//   dispatch(setAppStatus({ status: "loading" }))
+//   _authApi
+//     .logout()
+//     .then((res) => {
+//       if (res.data.resultCode === ResultCode.Success) {
+//         //dispatch(setAppStatusAC("succeeded"))
+//         dispatch(setAppStatus({ status: "succeeded" }))
+//         //dispatch(setIsLoggedInAC(false))
+//         dispatch(setIsLoggedIn({ isLoggedIn: false }))
+//         localStorage.removeItem("sn-token")
+//         dispatch(clearTodosData())
+//       } else {
+//         handleServerAppError(res.data, dispatch)
+//       }
+//     })
+//     .catch((error) => {
+//       handleServerNetworkError(error, dispatch)
+//     })
+// }

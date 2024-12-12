@@ -4,12 +4,13 @@ import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import { ChangeEvent } from "react"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { removeTaskTC, updateTaskTC } from "../../../../../model/tasksSlice"
+import { updateTaskTC } from "../../../../../model/tasksSlice"
 import { DomainTodolist } from "../../../../../model/todolistsSlice"
 import { getListItemSx } from "./Task.styles"
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
 import { DomainTask } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../../lib/enums"
+import { useRemoveTaskMutation } from "../../../../../api/tasksApi"
 
 //import {EditableSpan} from "common/components/EditableSpan/EditableSpan";
 
@@ -19,11 +20,14 @@ type Props = {
 }
 
 export const Task = ({ task, todolist }: Props) => {
+  const [removeTask, {}] = useRemoveTaskMutation()
+
   const dispatch = useAppDispatch()
 
   const removeTaskHandler = () => {
     //dispatch(removeTaskAC({ taskId: task.id, todolistId: todolist.id }))
-    dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
+    //dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
+    removeTask({ taskId: task.id, todolistId: todolist.id })
   }
 
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
