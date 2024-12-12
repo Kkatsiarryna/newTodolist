@@ -3,14 +3,12 @@ import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import { ChangeEvent } from "react"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { updateTaskTC } from "../../../../../model/tasksSlice"
 import { DomainTodolist } from "../../../../../model/todolistsSlice"
 import { getListItemSx } from "./Task.styles"
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
-import { DomainTask } from "../../../../../api/tasksApi.types"
+import { DomainTask, UpdateTaskModel } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../../lib/enums"
-import { useRemoveTaskMutation } from "../../../../../api/tasksApi"
+import { useRemoveTaskMutation, useUpdateTaskMutation } from "../../../../../api/tasksApi"
 
 //import {EditableSpan} from "common/components/EditableSpan/EditableSpan";
 
@@ -20,31 +18,59 @@ type Props = {
 }
 
 export const Task = ({ task, todolist }: Props) => {
+  //RTK QUERY
   const [removeTask, {}] = useRemoveTaskMutation()
-
-  const dispatch = useAppDispatch()
+  const [updateTask] = useUpdateTaskMutation()
 
   const removeTaskHandler = () => {
-    //dispatch(removeTaskAC({ taskId: task.id, todolistId: todolist.id }))
-    //dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
     removeTask({ taskId: task.id, todolistId: todolist.id })
   }
 
+  const _model: UpdateTaskModel = {
+    status: task.status,
+    title: task.title,
+    deadline: task.deadline,
+    description: task.description,
+    priority: task.priority,
+    startDate: task.startDate,
+  }
+
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    // const isDone = e.currentTarget.checked
-    // dispatch(changeTaskStatusAC({ taskId: task.id, isDone, todolistId: todolist.id }))
-
     let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
-    //dispatch(changeTaskStatusTC({ taskId: task.id, status, todolistId: todolist.id }))
-
-    dispatch(updateTaskTC({ task, domainModel: { status } }))
+    const model: UpdateTaskModel = {
+      ..._model,
+      status,
+    }
+    updateTask({ task, model })
   }
-
   const changeTaskTitleHandler = (title: string) => {
-    //dispatch(changeTaskTitleAC({ taskId: task.id, title, todolistId: todolist.id }))
-
-    dispatch(updateTaskTC({ task, domainModel: { title } }))
+    const model: UpdateTaskModel = {
+      ..._model,
+      title,
+    }
+    updateTask({ task, model })
   }
+
+  //REDUX
+  //const dispatch = useAppDispatch()
+
+  // const removeTaskHandler = () => {
+  //   //dispatch(removeTaskAC({ taskId: task.id, todolistId: todolist.id }))
+  //   dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
+  // }
+  //
+  // const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  //   // const isDone = e.currentTarget.checked
+  //   // dispatch(changeTaskStatusAC({ taskId: task.id, isDone, todolistId: todolist.id }))
+  //   let status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+  //   //dispatch(changeTaskStatusTC({ taskId: task.id, status, todolistId: todolist.id }))
+  //   dispatch(updateTaskTC({ task, domainModel: { status } }))
+  // }
+  //
+  // const changeTaskTitleHandler = (title: string) => {
+  //   //dispatch(changeTaskTitleAC({ taskId: task.id, title, todolistId: todolist.id }))
+  //   dispatch(updateTaskTC({ task, domainModel: { title } }))
+  // }
 
   const isCompleted = task.status === TaskStatus.Completed
   const isDisabled = todolist.entityStatus === "loading"
