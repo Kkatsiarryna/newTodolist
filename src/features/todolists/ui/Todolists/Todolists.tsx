@@ -3,10 +3,23 @@ import Grid from "@mui/material/Unstable_Grid2"
 import React from "react"
 import { Todolist } from "./Todolist/Todolist"
 import { useGetTodolistsQuery } from "../../api/todolistsApi"
+import { TodolistSkeleton } from "../skeletons/TodolistSkeleton/TodolistSkeleton"
 
 export const Todolists = () => {
   //RTK QUERY
-  const { data: todolists } = useGetTodolistsQuery()
+  const { data: todolists, isLoading } = useGetTodolistsQuery()
+
+  if (isLoading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "32px" }}>
+        {Array(3)
+          .fill(null)
+          .map((_, id) => (
+            <TodolistSkeleton key={id} />
+          ))}
+      </div>
+    )
+  }
 
   //REDUX
   //const todolists = useAppSelector(selectTodolists)

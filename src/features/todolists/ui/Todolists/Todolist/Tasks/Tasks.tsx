@@ -1,11 +1,9 @@
 import List from "@mui/material/List"
-import { useAppSelector } from "common/hooks/useAppSelector"
 import { Task } from "./Task/Task"
-import { useAppDispatch } from "common/hooks"
 import { TaskStatus } from "../../../../lib/enums"
 import { DomainTodolist } from "../../../../model/todolistsSlice"
-import { selectTasks } from "../../../../model/tasksSlice"
 import { useGetTasksQuery } from "../../../../api/tasksApi"
+import { TasksSkeleton } from "../../../skeletons/TasksSkeleton/TasksSkeleton"
 
 type Props = {
   todolist: DomainTodolist
@@ -13,7 +11,11 @@ type Props = {
 
 export const Tasks = ({ todolist }: Props) => {
   //RTK QUERY
-  const { data } = useGetTasksQuery(todolist.id)
+  const { data, isLoading } = useGetTasksQuery(todolist.id)
+
+  if (isLoading) {
+    return <TasksSkeleton />
+  }
 
   //REDUX
   //const tasks = useAppSelector(selectTasks)

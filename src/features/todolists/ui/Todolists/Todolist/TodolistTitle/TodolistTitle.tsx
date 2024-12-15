@@ -3,7 +3,9 @@ import IconButton from "@mui/material/IconButton"
 import { EditableSpan } from "common/components"
 import s from "./TodolistTitle.module.css"
 import { DomainTodolist } from "../../../../model/todolistsSlice"
-import { useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from "../../../../api/todolistsApi"
+import { todolistsApi, useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from "../../../../api/todolistsApi"
+import { RequestStatus } from "app/appSlice"
+import { useAppDispatch } from "common/hooks"
 
 type Props = {
   todolist: DomainTodolist
@@ -15,15 +17,33 @@ export const TodolistTitle = ({ todolist }: Props) => {
   //RTK QUERY
   const [updateTodolistTitle, {}] = useUpdateTodolistTitleMutation()
   const [removeTodolist] = useRemoveTodolistMutation()
+  const dispatch = useAppDispatch()
+
   const updateTodolistHandler = (title: string) => {
     updateTodolistTitle({ id, title })
   }
+
+  const updateQueryData = (status: RequestStatus) => {
+    dispatch(
+      todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+        const index = state.findIndex((tl) => tl.id === id)
+        if (index !== -1) {
+          state[index].entityStatus = status
+        }
+      }),
+    )
+  }
+
   const removeTodolistHandler = () => {
+    updateQueryData("loading")
     removeTodolist(id)
+      .unwrap()
+      .catch(() => {
+        updateQueryData("idle")
+      })
   }
 
   //REDUX
-  // const dispatch = useAppDispatch()
   // const updateTodolistHandler = (title: string) => {
   //   dispatch(updateTodolistTitleTC({ id, title }))
   // }

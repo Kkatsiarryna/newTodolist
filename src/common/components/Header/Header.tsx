@@ -12,7 +12,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { changeTheme, selectAppStatus, selectIsLoggedIn, selectThemeMode, setIsLoggedIn } from "app/appSlice"
 import { useLogoutMutation } from "../../../features/auth/api/authApi"
 import { ResultCode } from "../../../features/todolists/lib/enums"
-import { clearTodosData } from "../../../features/todolists/model/todolistsSlice"
+import { baseApi } from "app/baseApi"
 
 export const Header = () => {
   const dispatch = useAppDispatch()
@@ -31,13 +31,18 @@ export const Header = () => {
   const [logout] = useLogoutMutation()
 
   const logoutHandler = () => {
-    logout().then((res) => {
-      if (res.data?.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedIn({ isLoggedIn: false }))
-        localStorage.removeItem("sn-token")
-        dispatch(clearTodosData())
-      }
-    })
+    logout()
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedIn({ isLoggedIn: false }))
+          localStorage.removeItem("sn-token")
+          //REDUX
+          //dispatch(clearTodosData())
+        }
+      })
+      .then(() => {
+        dispatch(baseApi.util.invalidateTags(["Task", "Todolist"]))
+      })
   }
 
   //REDUX
