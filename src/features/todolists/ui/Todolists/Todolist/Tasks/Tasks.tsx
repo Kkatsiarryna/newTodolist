@@ -4,14 +4,17 @@ import { TaskStatus } from "../../../../lib/enums"
 import { DomainTodolist } from "../../../../model/todolistsSlice"
 import { useGetTasksQuery } from "../../../../api/tasksApi"
 import { TasksSkeleton } from "../../../skeletons/TasksSkeleton/TasksSkeleton"
+import { useState } from "react"
+import { TasksPagination } from "../TasksPagination/TasksPagination"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const Tasks = ({ todolist }: Props) => {
+  const [page, setPage] = useState(1)
   //RTK QUERY
-  const { data, isLoading } = useGetTasksQuery(todolist.id)
+  const { data, isLoading } = useGetTasksQuery({ todolistId: todolist.id, args: { page } })
 
   if (isLoading) {
     return <TasksSkeleton />
@@ -50,11 +53,14 @@ export const Tasks = ({ todolist }: Props) => {
       {tasksForTodolist?.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
-        <List>
-          {tasksForTodolist?.map((task) => {
-            return <Task key={task.id} task={task} todolist={todolist} />
-          })}
-        </List>
+        <>
+          <List>
+            {tasksForTodolist?.map((task) => {
+              return <Task key={task.id} task={task} todolist={todolist} />
+            })}
+          </List>
+          <TasksPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage} />
+        </>
       )}
     </>
   )
