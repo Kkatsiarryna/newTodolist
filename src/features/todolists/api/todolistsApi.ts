@@ -1,7 +1,7 @@
 import { BaseResponse } from "common/types"
 import { Todolist } from "./todolistsApi.types"
-import { DomainTodolist } from "../model/todolistsSlice"
 import { baseApi } from "app/baseApi"
+import { DomainTodolist } from "../lib/types"
 
 //RTK QUERY
 export const todolistsApi = baseApi.injectEndpoints({

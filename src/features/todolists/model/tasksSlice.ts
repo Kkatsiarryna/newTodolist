@@ -1,61 +1,61 @@
-import { DomainTask, UpdateTaskDomainModel } from "../api/tasksApi.types"
-import { createSlice } from "@reduxjs/toolkit"
-import { addTodolist, clearTodosData, removeTodolist } from "./todolistsSlice"
-
-export type TasksStateType = {
-  [key: string]: DomainTask[]
-}
-
-export const tasksSlice = createSlice({
-  name: "tasks",
-  initialState: {} as TasksStateType,
-  reducers: (create) => ({
-    setTasks: create.reducer<{ todolistId: string; tasks: DomainTask[] }>((state, action) => {
-      state[action.payload.todolistId] = action.payload.tasks
-    }),
-    removeTask: create.reducer<{ taskId: string; todolistId: string }>((state, action) => {
-      const tasks = state[action.payload.todolistId]
-      const index = tasks.findIndex((task) => task.id === action.payload.taskId)
-      if (index !== -1) {
-        tasks.splice(index, 1)
-      }
-    }),
-    addTask: create.reducer<{ task: DomainTask }>((state, action) => {
-      const tasks = state[action.payload.task.todoListId]
-      tasks.unshift(action.payload.task)
-    }),
-    updateTask: create.reducer<{ task: DomainTask; domainModel: UpdateTaskDomainModel }>((state, action) => {
-      const tasks = state[action.payload.task.todoListId]
-      const index = tasks.findIndex((task) => task.id === action.payload.task.id)
-      if (index !== -1) {
-        //tasks[index] = { ...tasks[index], ...action.payload.domainModel }
-        tasks[index] = { ...action.payload.task, ...action.payload.domainModel }
-      }
-    }),
-    // clearTasks: create.reducer(() => {
-    //   return {}
-    // }),
-  }),
-  extraReducers: (builder) => {
-    builder
-      .addCase(addTodolist, (state, action) => {
-        state[action.payload.todolist.id] = []
-      })
-      .addCase(removeTodolist, (state, action) => {
-        delete state[action.payload.id]
-      })
-      .addCase(clearTodosData, () => {
-        return {}
-      })
-  },
-  selectors: {
-    selectTasks: (state) => state,
-  },
-})
-
-export const { setTasks, removeTask, addTask, updateTask } = tasksSlice.actions
-export const { selectTasks } = tasksSlice.selectors
-export const tasksReducer = tasksSlice.reducer
+// import { DomainTask, UpdateTaskDomainModel } from "../api/tasksApi.types"
+// import { createSlice } from "@reduxjs/toolkit"
+// import { addTodolist, clearTodosData, removeTodolist } from "./todolistsSlice"
+//
+// export type TasksStateType = {
+//   [key: string]: DomainTask[]
+// }
+//
+// export const tasksSlice = createSlice({
+//   name: "tasks",
+//   initialState: {} as TasksStateType,
+//   reducers: (create) => ({
+//     setTasks: create.reducer<{ todolistId: string; tasks: DomainTask[] }>((state, action) => {
+//       state[action.payload.todolistId] = action.payload.tasks
+//     }),
+//     removeTask: create.reducer<{ taskId: string; todolistId: string }>((state, action) => {
+//       const tasks = state[action.payload.todolistId]
+//       const index = tasks.findIndex((task) => task.id === action.payload.taskId)
+//       if (index !== -1) {
+//         tasks.splice(index, 1)
+//       }
+//     }),
+//     addTask: create.reducer<{ task: DomainTask }>((state, action) => {
+//       const tasks = state[action.payload.task.todoListId]
+//       tasks.unshift(action.payload.task)
+//     }),
+//     updateTask: create.reducer<{ task: DomainTask; domainModel: UpdateTaskDomainModel }>((state, action) => {
+//       const tasks = state[action.payload.task.todoListId]
+//       const index = tasks.findIndex((task) => task.id === action.payload.task.id)
+//       if (index !== -1) {
+//         //tasks[index] = { ...tasks[index], ...action.payload.domainModel }
+//         tasks[index] = { ...action.payload.task, ...action.payload.domainModel }
+//       }
+//     }),
+//     // clearTasks: create.reducer(() => {
+//     //   return {}
+//     // }),
+//   }),
+//   extraReducers: (builder) => {
+//     builder
+//       .addCase(addTodolist, (state, action) => {
+//         state[action.payload.todolist.id] = []
+//       })
+//       .addCase(removeTodolist, (state, action) => {
+//         delete state[action.payload.id]
+//       })
+//       .addCase(clearTodosData, () => {
+//         return {}
+//       })
+//   },
+//   selectors: {
+//     selectTasks: (state) => state,
+//   },
+// })
+//
+// export const { setTasks, removeTask, addTask, updateTask } = tasksSlice.actions
+// export const { selectTasks } = tasksSlice.selectors
+// export const tasksReducer = tasksSlice.reducer
 
 //thunck
 

@@ -3,12 +3,12 @@ import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
 import ListItem from "@mui/material/ListItem"
 import { ChangeEvent } from "react"
-import { DomainTodolist } from "../../../../../model/todolistsSlice"
 import { getListItemSx } from "./Task.styles"
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
 import { DomainTask, UpdateTaskModel } from "../../../../../api/tasksApi.types"
 import { TaskStatus } from "../../../../../lib/enums"
 import { useRemoveTaskMutation, useUpdateTaskMutation } from "../../../../../api/tasksApi"
+import { DomainTodolist } from "../../../../../lib/types"
 
 //import {EditableSpan} from "common/components/EditableSpan/EditableSpan";
 
