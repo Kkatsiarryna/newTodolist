@@ -30,6 +30,11 @@ export const TodolistTitle = ({ todolist }: Props) => {
         if (index !== -1) {
           state[index].entityStatus = status
         }
+
+        // const todolist = state.find( tl => tl.id === id)
+        // if(todolist){
+        //   todolist.entityStatus = status
+        // }
       }),
     )
   }

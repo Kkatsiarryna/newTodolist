@@ -1,3 +1,5 @@
+/* CSS modules / composes: https://github.com/css-modules/css-modules/blob/master/docs/composition.md */
+
 .common {
     display: flex;
     justify-content: space-between;

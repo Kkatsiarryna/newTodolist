@@ -30,6 +30,7 @@ export const todolistsApi = baseApi.injectEndpoints({
         invalidatesTags: ["Todolist"],
       }),
       removeTodolist: build.mutation<BaseResponse, string>({
+        //типизация 1 что возвращает сервер, 2 типизац аргумента
         query: (id) => {
           return {
             method: "DELETE",

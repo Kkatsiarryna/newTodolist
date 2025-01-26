@@ -3,7 +3,7 @@
 // import { createSlice } from "@reduxjs/toolkit"
 // import { DomainTodolist, FilterValues } from "../lib/types"
 //
-//
+////массив как initialState нельзя расширить
 //
 // export const todolistsSlice = createSlice({
 //   name: "todolists",
@@ -18,6 +18,7 @@
 //       // })
 //     }),
 //     removeTodolist: create.reducer<{ id: string }>((state, action) => {
+// const a = current(state)
 //       const index = state.findIndex((todo) => todo.id === action.payload.id)
 //       if (index !== -1) {
 //         state.splice(index, 1)
@@ -49,7 +50,7 @@
 //         state[index].entityStatus = action.payload.entityStatus
 //       }
 //     }),
-//     clearTodosData: create.reducer(() => {
+//     clearTodosData: create.reducer<undefined>(() => {
 //       return []
 //     }),
 //   }),

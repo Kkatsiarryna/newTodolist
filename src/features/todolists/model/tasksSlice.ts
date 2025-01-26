@@ -38,6 +38,8 @@
 //   }),
 //   extraReducers: (builder) => {
 //     builder
+//        // 1 аргумент - action creator, который мы хотим обработать
+//       // 2 аргумент - reducer, в котором изменяем state
 //       .addCase(addTodolist, (state, action) => {
 //         state[action.payload.todolist.id] = []
 //       })

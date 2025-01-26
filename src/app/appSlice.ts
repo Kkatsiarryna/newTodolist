@@ -33,13 +33,16 @@ export const appSlice = createSlice({
     builder
       // .addMatcher(
       //   (action) => {
-      //     console.log(action)
+      //     console.log("predicate  👾", action.type)
       //     return true
       //   },
-      //   () => {},
+      //   (state, action) => {
+      //     console.log("reducer 😋 ", action.type)
+      //   },
       // )
       .addMatcher(isPending, (state, action) => {
         if (
+          //Убрать прогресс бар для запросов связанных с тудулистами
           todolistsApi.endpoints.getTodolists.matchPending(action) ||
           tasksApi.endpoints.getTasks.matchPending(action)
         ) {
@@ -48,11 +51,16 @@ export const appSlice = createSlice({
         state.status = "loading"
       })
       .addMatcher(isFulfilled, (state) => {
+        // action => {
+        //   return action.type.endsWith('/fulfilled')
+        // },
         state.status = "succeeded"
       })
       .addMatcher(isRejected, (state) => {
         state.status = "failed"
       })
+    //1 аргумент - matcher функция типа предикат
+    // 2 аргумент - reducer функция, в который изменяется state
   },
   selectors: {
     selectThemeMode: (state) => state.themeMode,
@@ -64,6 +72,7 @@ export const appSlice = createSlice({
 
 export const { changeTheme, setAppStatus, setAppError, setIsLoggedIn } = appSlice.actions
 export const { selectThemeMode, selectAppStatus, selectAppError, selectIsLoggedIn } = appSlice.selectors
+export type AppState = ReturnType<typeof appSlice.getInitialState>
 export const appReducer = appSlice.reducer
 
 export type appInitialState = ReturnType<typeof appSlice.getInitialState>

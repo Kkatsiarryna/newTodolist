@@ -9,7 +9,7 @@ export const useTasks = (todolist: DomainTodolist) => {
 
   const [page, setPage] = useState(1)
 
-  const { data, isLoading } = useGetTasksQuery({ todolistId: id, args: { page } })
+  const { data, isLoading, error } = useGetTasksQuery({ todolistId: id, args: { page } })
 
   let tasks = data?.items
 
@@ -39,5 +39,5 @@ export const useTasks = (todolist: DomainTodolist) => {
   //   tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.Completed)
   // }
 
-  return { tasks, isLoading, page, setPage, totalCount: data?.totalCount }
+  return { tasks, isLoading, page, setPage, totalCount: data?.totalCount, error }
 }

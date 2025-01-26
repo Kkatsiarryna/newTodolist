@@ -38,10 +38,12 @@ export const Header = () => {
           localStorage.removeItem("sn-token")
           //REDUX
           //dispatch(clearTodosData())
+          //RTK
+          //dispatch(baseApi.util.resetApiState())
         }
       })
       .then(() => {
-        dispatch(baseApi.util.invalidateTags(["Task", "Todolist"]))
+        dispatch(baseApi.util.invalidateTags(["Task", "Todolist"])) //зачистка
       })
   }
 

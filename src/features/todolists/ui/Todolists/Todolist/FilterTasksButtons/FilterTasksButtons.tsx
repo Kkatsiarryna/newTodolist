@@ -20,9 +20,9 @@ export const FilterTasksButtons = ({ todolist }: Props) => {
       todolistsApi.util.updateQueryData(
         // 1 endpoint
         "getTodolists",
-        // 2 аргументы которые приходят в м
+        // 2 аргументы которые приходят в endpoint
         undefined,
-        // 3 state кеша
+        // 3 updateRecipe - коллбек, в котором мутабельным образом можем изменить закешированный стейт
         (state) => {
           const index = state.findIndex((tl) => tl.id === id)
           if (index !== -1) {

@@ -8,6 +8,10 @@ import { useAddTodolistMutation } from "../features/todolists/api/todolistsApi"
 export const Main = () => {
   //RTK QUERY
   const [addTodolist, {}] = useAddTodolistMutation()
+
+  // Первый параметр - функция, с помощью которой мы будем делать запрос
+  // Второй параметр - объект, в котором находятся вспомогательные свойства (data, error, loading и т.д.)
+
   const addTodolistCb = (title: string) => {
     addTodolist(title)
   }

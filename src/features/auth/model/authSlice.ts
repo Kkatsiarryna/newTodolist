@@ -6,7 +6,7 @@
 //     // isInitialized: false,
 //   },
 //   reducers: (create) => ({
-//     // setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => {
+//     // setIsLoggedIn: create.reducer<{ isLoggedIn: boolean }>((state, action) => { //подредьюсер
 //     //   state.isLoggedIn = action.payload.isLoggedIn
 //     // }),
 //     setIsInitialized: create.reducer<{ isInitialized: boolean }>((state, action) => {

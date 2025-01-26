@@ -10,7 +10,23 @@ type Props = {
 }
 
 export const Tasks = ({ todolist }: Props) => {
-  const { tasks, isLoading, totalCount, page, setPage } = useTasks(todolist)
+  const { tasks, isLoading, totalCount, page, setPage, error } = useTasks(todolist)
+
+  //Обработка ошибок на уровне useQuery и useMutation
+  // const dispatch = useAppDispatch()
+  // useEffect(() => {
+  //   if (error) {
+  //     if ("status" in error) {
+  //       //  FetchBaseQueryError
+  //       const errMsg = "error" in error ? error.error : JSON.stringify(error.data)
+  //       dispatch(setAppError({ error: errMsg }))
+  //     } else {
+  //       // SerializedError
+  //       dispatch(setAppError({ error: error.message ? error.message : "Some error occurred." }))
+  //     }
+  //   }
+  // }, [error])
+
   if (isLoading) {
     return <TasksSkeleton />
   }
@@ -21,6 +37,7 @@ export const Tasks = ({ todolist }: Props) => {
         <p>Тасок нет</p>
       ) : (
         <>
+          <p>#128187</p>
           <List>
             {tasks?.map((task) => {
               return <Task key={task.id} task={task} todolist={todolist} />
