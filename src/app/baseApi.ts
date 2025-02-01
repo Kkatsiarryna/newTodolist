@@ -12,14 +12,14 @@ export const baseApi = createApi({
       },
     })(args, api, extraOptions)
 
-    debugger
+    // debugger
     handleError(api, result)
 
     return result
   },
   endpoints: () => ({}),
   tagTypes: ["Todolist", "Task"],
-  keepUnusedDataFor: 30,
-  refetchOnFocus: true,
-  refetchOnReconnect: true,
+  keepUnusedDataFor: 30, //изменить время кеша
+  refetchOnFocus: true, //автоматически повторно запрашивать данные, когда окно приложения или вкладка браузера возвращаются в фокус
+  refetchOnReconnect: true, // управляет повторным запросом данных, когда приложение или браузер восстанавливает соединение с интернетом после его потери
 })

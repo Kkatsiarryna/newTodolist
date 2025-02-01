@@ -43,7 +43,10 @@ export const Tasks = ({ todolist }: Props) => {
               return <Task key={task.id} task={task} todolist={todolist} />
             })}
           </List>
-          <TasksPagination totalCount={totalCount || 0} page={page} setPage={setPage} />
+          {/*{totalCount > 4 && <TasksPagination totalCount={totalCount || 0} page={page} setPage={setPage} />}*/}
+          {totalCount !== undefined && totalCount > 4 ? (
+            <TasksPagination totalCount={totalCount} page={page} setPage={setPage} />
+          ) : null}
         </>
       )}
     </>

@@ -7,7 +7,13 @@ import { TodolistSkeleton } from "../skeletons/TodolistSkeleton/TodolistSkeleton
 
 export const Todolists = () => {
   //RTK QUERY
-  const { data: todolists, isLoading } = useGetTodolistsQuery()
+  const { data: todolists, isLoading } =
+    useGetTodolistsQuery()
+    //   undefined, {
+    //   pollingInterval: 3000,
+    //   skipPollingIfUnfocused: true,
+    // }
+  // автоматически повторять запросы через определённые интервалы времени для поддержания актуальности данных
 
   if (isLoading) {
     return (

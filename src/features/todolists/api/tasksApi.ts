@@ -16,7 +16,10 @@ export const tasksApi = baseApi.injectEndpoints({
           params,
         }
       },
-      //providesTags: (res) => (res ? res.items.map(({ id }) => ({ type: "Task", id })) : ["Task"]),
+      //providesTags: (res) => (res ? res.items.map(({ id }) => ({ type: "Task", id })) : ["Task"]), //taskid
+
+      // providesTags: (res, err, { todolistId }) => [{ type: "Task", id: todolistId }], //привязываемся к todolistId
+
       providesTags: (res, err, { todolistId }) =>
         res
           ? [...res.items.map(({ id }) => ({ type: "Task", id }) as const), { type: "Task", id: todolistId }]
@@ -36,6 +39,7 @@ export const tasksApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
       invalidatesTags: (res, err, { taskId }) => [{ type: "Task", id: taskId }],
+      //invalidatesTags: (res, err, { todolistId }) => [{ type: "Task", id: todolistId }],
     }),
     updateTask: build.mutation<BaseResponse<{ item: DomainTask }>, { task: DomainTask; model: UpdateTaskModel }>({
       query: ({ task, model }) => ({
@@ -44,6 +48,7 @@ export const tasksApi = baseApi.injectEndpoints({
         body: model,
       }),
       invalidatesTags: (res, err, { task }) => [{ type: "Task", id: task.id }],
+      //invalidatesTags: (res, err, { task }) => [{ type: "Task", id: task.todoListId }],
     }),
   }),
 })
@@ -80,3 +85,23 @@ export const _tasksApi = {
     return instance.put<BaseResponse<{ item: DomainTask }>>(`todo-lists/${task.todoListId}/tasks/${task.id}`, model)
   },
 }
+
+//   /* ТЭГИ
+//    * todo1
+//    * [
+//    * { type: "Task", id: 1, },
+//    * { type: "Task", id: 2, },
+//    * { type: "Task", id: 3, },
+//    * { type: "Task", id: 4, }
+//    * { type: "Task", id: todolistId1 } сначала таски, в конец добавляется тудулист id
+//    * ]
+//    *
+//    * todo2
+//    * [
+//    * { type: "Task", id: 1, },
+//    * { type: "Task", id: 2, },
+//    * { type: "Task", id: 3, },
+//    * { type: "Task", id: todolistId2 }
+//    * ]
+//    *
+//    * */
