@@ -6,12 +6,25 @@ import { Controller } from "react-hook-form"
 import Button from "@mui/material/Button"
 import s from "../Login.module.css"
 import Checkbox from "@mui/material/Checkbox"
+import { useState } from "react"
+import { LoginArgs } from "../../../api/authApi.types"
 
 export const LoginForm = () => {
-  const { onSubmit, handleSubmit, errors, register, control } = useLogin()
+  const { onSubmit, handleSubmit, errors, register, control, captchaUrl } = useLogin()
+
+  const [showCaptcha, setShowCaptcha] = useState(false)
+
+  const onFormSubmit = async (data: LoginArgs) => {
+    if (!showCaptcha) {
+      setShowCaptcha(true)
+    } else {
+      await onSubmit(data)
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    //<form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onFormSubmit)}>
       <FormGroup>
         <TextField
           label="Email"
@@ -49,6 +62,19 @@ export const LoginForm = () => {
             />
           }
         />
+        {showCaptcha && captchaUrl && (
+          <>
+            <img alt="CAPTCHA" src={captchaUrl.url} />
+            <TextField
+              label="Captcha"
+              margin="normal"
+              {...register("captcha", {
+                required: "Captcha is required",
+              })}
+            />
+            {errors.captcha && <span className={s.errorMessage}>{errors.captcha.message}</span>}
+          </>
+        )}
         <Button type={"submit"} variant={"contained"} color={"primary"}>
           Login
         </Button>

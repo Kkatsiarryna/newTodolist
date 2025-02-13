@@ -25,10 +25,13 @@ export const authApi = baseApi.injectEndpoints({
         }
       },
     }),
+    captchaURL: build.query<{ url: string }, void>({
+      query: () => "/security/get-captcha-url",
+    }),
   }),
 })
 
-export const { useMeQuery, useLoginMutation, useLogoutMutation } = authApi
+export const { useMeQuery, useLoginMutation, useLogoutMutation, useCaptchaURLQuery } = authApi
 
 export const _authApi = {
   login(payload: LoginArgs) {
