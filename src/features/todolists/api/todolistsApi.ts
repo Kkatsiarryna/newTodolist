@@ -37,6 +37,25 @@ export const todolistsApi = baseApi.injectEndpoints({
             url: `todo-lists/${id}`,
           }
         },
+        //Этот метод обеспечивает обработку действия на уровне локального состояния,
+        // улучшая пользовательский интерфейс за счет временного обновления состояния и предоставления обратной связи о ходе выполнения запроса.
+        async onQueryStarted(id: string, { dispatch, queryFulfilled }) {
+          //queryFulfilled - Это промис, который разрешается, когда запрос завершается успешно
+          const patchResult = dispatch(
+            todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+              const index = state.findIndex((tl) => tl.id === id)
+              if (index !== -1) {
+                state[index].entityStatus = "loading" //disable todolist
+                //state.splice(index, 1) - удалить тудулист
+              }
+            }),
+          )
+          try {
+            await queryFulfilled
+          } catch {
+            patchResult.undo()
+          }
+        },
         invalidatesTags: ["Todolist"],
       }),
       updateTodolistTitle: build.mutation<BaseResponse, { id: string; title: string }>({

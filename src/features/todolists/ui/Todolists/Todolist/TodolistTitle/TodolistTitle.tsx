@@ -23,29 +23,32 @@ export const TodolistTitle = ({ todolist }: Props) => {
     updateTodolistTitle({ id, title })
   }
 
-  const updateQueryData = (status: RequestStatus) => {
-    dispatch(
-      todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
-        const index = state.findIndex((tl) => tl.id === id)
-        if (index !== -1) {
-          state[index].entityStatus = status
-        }
-
-        // const todolist = state.find( tl => tl.id === id)
-        // if(todolist){
-        //   todolist.entityStatus = status
-        // }
-      }),
-    )
-  }
+  //вместо этого кода используется Optimistic Update в todolistsApi
+  // const updateQueryData = (status: RequestStatus) => {
+  //   //обноваляем кэш, disabled тудулист когда удаляем
+  //   //updateQueryData для изменения записи кэша
+  //   dispatch(
+  //     todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+  //       const index = state.findIndex((tl) => tl.id === id)
+  //       if (index !== -1) {
+  //         state[index].entityStatus = status
+  //       }
+  //
+  //       // const todolist = state.find( tl => tl.id === id)
+  //       // if(todolist){
+  //       //   todolist.entityStatus = status
+  //       // }
+  //     }),
+  //   )
+  // }
 
   const removeTodolistHandler = () => {
-    updateQueryData("loading")
+    //updateQueryData("loading")
     removeTodolist(id)
-      .unwrap()
-      .catch(() => {
-        updateQueryData("idle")
-      })
+    // .unwrap()
+    // .catch(() => {
+    //   updateQueryData("idle")
+    // })
   }
 
   //REDUX
